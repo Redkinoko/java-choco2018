@@ -17,7 +17,8 @@ public class PPC_TP1_Choco {
     {
         //e1.run();
         //e2.run(8, 5);
-        e4.test(2);
+        //e4.test(2);
+        e4.run(e4.ligne(), e4.colonne(), e4.montante(), e4.descendante());
         //debugMont();
         //debugDesc();
     }
@@ -64,7 +65,7 @@ public class PPC_TP1_Choco {
     public static void debugDesc()
     {
         int n = 8;
-        //MONTANTE
+        //DESC
         String[][] test = new String[n][n];//débug
         int j = 1;
         while(j < (n+n))
@@ -100,4 +101,5 @@ public class PPC_TP1_Choco {
             System.out.println();
         }
     }
+    
 }

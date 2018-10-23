@@ -5,9 +5,6 @@
  */
 package ppc_tp1_choco;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.variables.IntVar;
@@ -30,27 +27,16 @@ public class e4 {
     */
     //INSTANCE DE TEST TOMO
     /*
-    [M]00024 12423 12100
-    [D]00121 23421 42000
-    [-]22264 222
-    [|]11633 611
-    *
-    __0,1,2,3,4,5,6,7
-    __:_:_:_:_:_:_:_:
-    0:7,8,9,0,1,2,3,4
-    1:6,7,8,9,0,1,2,3
-    2:5,6,7,8,9,0,1,2
-    3:4,5,6,7,8,9,0,1
-    4:3,4,5,6,7,8,9,0
-    5:2,3,4,5,6,7,8,9
-    6:1,2,3,4,5,6,7,8
-    7:0,1,2,3,4,5,6,7
+    [D]00024 12432 12100
+    [M]00121 23421 42000
+    [c]22264 222
+    [l]11633 611
+
     */
-    
-    public static int[] ligne()         { return new int[]{ 2,2,2,6,4, 2,2,2 }; }
-    public static int[] colonne()       { return new int[]{ 1,1,6,3,3, 6,1,1 }; }
-    public static int[] montante()      { return new int[]{ 0,0,0,2,4, 1,2,4,2,3, 1,2,1,0,0 }; }
-    public static int[] descendante()   { return new int[]{ 0,0,1,2,1, 2,3,4,2,1, 4,2,0,0,0 }; }
+    public static int[] ligne()       { return new int[]{ 1,1,6,3,3, 6,1,1 }; }
+    public static int[] colonne()     { return new int[]{ 2,2,2,6,4, 2,2,2 }; }
+    public static int[] montante()    { return new int[]{ 0,0,1,2,1, 2,3,4,2,1, 4,2,0,0,0 }; }
+    public static int[] descendante() { return new int[]{ 0,0,0,2,4, 1,2,4,3,2, 1,2,1,0,0 }; }
     //Gauche vers droite
     
     public static void test(int i)
@@ -183,8 +169,8 @@ public class e4 {
         {
             for(int x=0 ; x<n ; x++)
             {
-                if(view[x][y] == 0) { System.out.print("_|"); }
-                else { System.out.print(view[x][y] + "|"); }
+                if(view[x][y] == 0) { System.out.print("_"); }
+                else { System.out.print(view[x][y] + ""); }
             }
             System.out.println();
         }
