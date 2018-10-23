@@ -5,7 +5,11 @@
  */
 package ppc_tp1_choco;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 import org.chocosolver.solver.Model;
+import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.tools.ArrayUtils;
 
@@ -26,27 +30,52 @@ public class e4 {
     */
     //INSTANCE DE TEST TOMO
     /*
-    [M]000241242312100
-    [D]001212342142000
-    [-]22264222
-    [|]11633611
+    [M]00024 12423 12100
+    [D]00121 23421 42000
+    [-]22264 222
+    [|]11633 611
+    *
+    __0,1,2,3,4,5,6,7
+    __:_:_:_:_:_:_:_:
+    0:7,8,9,0,1,2,3,4
+    1:6,7,8,9,0,1,2,3
+    2:5,6,7,8,9,0,1,2
+    3:4,5,6,7,8,9,0,1
+    4:3,4,5,6,7,8,9,0
+    5:2,3,4,5,6,7,8,9
+    6:1,2,3,4,5,6,7,8
+    7:0,1,2,3,4,5,6,7
     */
     
-    public static int[] inst_ligne()         { return new int[]{ 2,2,2,6,4,2,2,2 }; }
-    public static int[] inst_colonne()       { return new int[]{ 1,1,6,3,3,6,1,1 }; }
-    public static int[] inst_montante()      { return new int[]{ 0,0,0,2,4,1,2,4,3,2,1,2,1,0,0 }; }
-    public static int[] inst_descendante()   { return new int[]{ 0,0,1,2,1,2,3,4,2,1,4,2,0,0,0 }; }
+    public static int[] ligne()         { return new int[]{ 2,2,2,6,4, 2,2,2 }; }
+    public static int[] colonne()       { return new int[]{ 1,1,6,3,3, 6,1,1 }; }
+    public static int[] montante()      { return new int[]{ 0,0,0,2,4, 1,2,4,2,3, 1,2,1,0,0 }; }
+    public static int[] descendante()   { return new int[]{ 0,0,1,2,1, 2,3,4,2,1, 4,2,0,0,0 }; }
     //Gauche vers droite
-    /*
-    0,0,0,0,0,0,0,0
-    0,0,0,0,0,0,0,0
-    0,0,0,0,0,0,0,0
-    0,0,0,0,0,0,0,0
-    0,0,0,0,0,0,0,0
-    0,0,0,0,0,0,0,0
-    0,0,0,0,0,0,0,0
-    0,0,0,0,0,0,0,0
-    */
+    
+    public static void test(int i)
+    {
+        switch(i)
+        {
+            case 1 :
+                /*
+                1,0,1
+                0,0,1
+                1,0,0
+                */
+                run(new int[]{2,0,2}, new int[]{2,1,1}, new int[]{1,0,1,1,1}, new int[]{1,0,2,1,0});
+                break;
+            default :
+                /*
+                1,1,0,1
+                0,1,0,1
+                0,1,0,0
+                1,0,0,1
+                */
+                run(new int[]{2,3,0,3}, new int[]{3,2,1,2}, new int[]{1,0,1,3,1,1,1}, new int[]{1,1,1,3,1,0,1});
+        }
+    }
+    
     public static void run(int[] ligne, int[] colonne, int[] montante, int[] descendante)
     {
         int n = ligne.length;
@@ -57,64 +86,107 @@ public class e4 {
         {
             for(int i = 0 ; i < n ; i++)
             {
-                vars[i][j]  = model.intVar("P_("+i+";"+j+")", 0,1);
+                vars[i][j]  = model.intVar(""+i+"="+j+"", 0,1);
             }
         }
         //Contraintes
         for(int i=0; i<n ; i++)
         {
-            model.sum(vars[i], "=", ligne[i]);
+            model.sum(vars[i], "=", ligne[i]).post();
         }
         for(int i=0; i<n ; i++)
         {
-            model.sum(ArrayUtils.getColumn(vars, i), "=", colonne[i]);
+            model.sum(ArrayUtils.getColumn(vars, i), "=", colonne[i]).post();
         }
 
-        IntVar[] descendantes = new IntVar[n];
-        //DESCENDANTES
-        for(int i = 0 ; i < n ; i++)
+        IntVar[] tmp;
+        
+        //MONTANTE
+        int j = 1;
+        while(j < (n+n))
         {
-            //reset
-            reset(descendantes);
-            int max = n-i;
-            //descendante haut droite
-            for(int w = 0 ; w < max ; w++)
+            if(j <= n)//Partie inférieur gauche et milieu
             {
-                //System.out.println((i+w) + ";" + (0+w));
-                descendantes[w] = vars[i+w][0+w];
-            }
-            //model.sum(descendantes, "=", sum);
-            reset(descendantes);
-            //descendante haut gauche
-            if(i > 0)
-            {
-                for(int w = 0 ; w < i ; w++)
+                tmp = new IntVar[j];
+                for(int i=0 ; i < j ; i++)
                 {
-                    System.out.println((w) + ";" + (n-w-1));
-                    //descendantes[w] = vars[0+w][i+w];
+                    tmp[i] = vars[i][(n-j+i)];
                 }
+                model.sum(tmp, "=", montante[j-1]).post();
             }
-            //System.out.println("---" + (n-i) + " " + (i));
-            System.out.println();
+            else//Partie supérieur droite
+            {
+                tmp = new IntVar[(n-j%n)];
+                for(int i=0 ; i < (n-j%n) ; i++)
+                {
+                    tmp[i] = vars[(n-(n-j%n)+i)][i];
+                }
+                model.sum(tmp, "=", montante[j-1]).post();
+            }
+            j++;
         }
         
-        /*
-        for(int j=0 ;j<n ; j++)
+        //DESCENDENTE
+        j = 1;
+        while(j < (n+n))
         {
-            for(int i=0 ; i<n ; i++)
+            if(j <= n)
             {
-                System.out.print(d[i][j]);
+                tmp = new IntVar[j];
+                for(int i=0 ; i<j ; i++)
+                {
+                    tmp[i] = vars[(i)][(j-1-i)];
+                }
+                model.sum(tmp, "=", descendante[j-1]).post();
             }
-            System.out.println();
+            else
+            {
+                tmp = new IntVar[(n-j%n)];
+                for(int i=0 ; i<(n-j%n) ; i++)
+                {
+                    tmp[i] = vars[(j%n+i)][(n-i-1)];
+                }
+                model.sum(tmp, "=", descendante[j-1]).post();
+            }
+            j++;
         }
-        */
+        
+        model.getSolver().showStatistics();
+        Solution solution = model.getSolver().findSolution();
+
+        if(solution != null)
+        {
+            System.out.println(solution.toString());
+            afficherMatrice(n, solution.toString());
+        }
+        else
+        {
+            System.out.println("Pas de solutions");
+        }
     }
     
-    public static void reset(IntVar[] a)
+    public static void afficherMatrice(int n, String resultat)
     {
-        for(int i=0 ; i<a.length ; i++)
+        int[][] view = new int[n][n];
+        for(int y=0 ; y<n ; y++) 
+            for(int x=0 ; x<n ; x++) 
+                view[x][y] = 0;
+        String[] split1 = resultat.replaceFirst("Solution: ", "").split(", ");
+        for (String s : split1) {
+            String[] s2 = s.split("=");
+            if(s2.length == 3)
+            {
+                view[Integer.parseInt(s2[0])][Integer.parseInt(s2[1])] = Integer.parseInt(s2[2]);
+            }
+        }
+        for(int y=0 ; y<n ; y++)
         {
-            a[i] = null;
+            for(int x=0 ; x<n ; x++)
+            {
+                if(view[x][y] == 0) { System.out.print("_|"); }
+                else { System.out.print(view[x][y] + "|"); }
+            }
+            System.out.println();
         }
     }
 }
