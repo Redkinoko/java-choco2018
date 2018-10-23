@@ -83,18 +83,19 @@ public class e4 {
                 //System.out.println((i+w) + ";" + (0+w));
                 descendantes[w] = vars[i+w][0+w];
             }
-            model.sum(descendantes, "=", sum);
+            //model.sum(descendantes, "=", sum);
             reset(descendantes);
             //descendante haut gauche
             if(i > 0)
             {
-                for(int w = 0 ; w < max ; w++)
+                for(int w = 0 ; w < i ; w++)
                 {
-                    //System.out.println((0+w) + ";" + (i+w));
-                    descendantes[w] = vars[0+w][i+w];
+                    System.out.println((w) + ";" + (n-w-1));
+                    //descendantes[w] = vars[0+w][i+w];
                 }
             }
-            //System.out.println();
+            //System.out.println("---" + (n-i) + " " + (i));
+            System.out.println();
         }
         
         /*
