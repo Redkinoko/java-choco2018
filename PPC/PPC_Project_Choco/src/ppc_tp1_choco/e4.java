@@ -72,16 +72,19 @@ public class e4 {
         {
             for(int i = 0 ; i < n ; i++)
             {
+                //Chaque case peut contenir un pixel blanc ou noir
                 vars[i][j]  = model.intVar(""+i+"="+j+"", 0,1);
             }
         }
         //Contraintes
         for(int i=0; i<n ; i++)
         {
+            //Chaque ligne ne doit pas dépasser la somme
             model.sum(vars[i], "=", ligne[i]).post();
         }
         for(int i=0; i<n ; i++)
         {
+            //Chaque colonne ne doit pas dépasser la somme
             model.sum(ArrayUtils.getColumn(vars, i), "=", colonne[i]).post();
         }
 
@@ -91,6 +94,7 @@ public class e4 {
         int j = 1;
         while(j < (n+n))
         {
+            //Chaque diagonal montante ne doit pas dépasser la somme
             if(j <= n)//Partie inférieur gauche et milieu
             {
                 tmp = new IntVar[j];
@@ -112,10 +116,11 @@ public class e4 {
             j++;
         }
         
-        //DESCENDENTE
+        //DESCENDANTE
         j = 1;
         while(j < (n+n))
         {
+            //Chaque diagonal descendante ne doit pas dépasser la somme
             if(j <= n)
             {
                 tmp = new IntVar[j];
@@ -136,7 +141,7 @@ public class e4 {
             }
             j++;
         }
-        
+        //Résolution
         model.getSolver().showStatistics();
         Solution solution = model.getSolver().findSolution();
 
