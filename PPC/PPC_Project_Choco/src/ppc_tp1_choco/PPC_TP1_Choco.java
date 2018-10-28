@@ -4,6 +4,11 @@
  * and open the template in the editor.
  */
 package ppc_tp1_choco;
+
+import java.util.ArrayList;
+import ppc_tp1_choco.view.Frame;
+import ppc_tp1_choco.view.Panel;
+
 /**
  *
  * @author jh224110
@@ -22,6 +27,7 @@ public class PPC_TP1_Choco {
         //int[] carton_hauteur = new int[]{ 1, 2, 2, 1, 3 };
         //int[] carton_poids   = new int[]{ 3, 3, 1, 1, 4 };
         //e5.run(3, 4, carton_hauteur, carton_poids);
-        e6.run(3, 13);
+        e6.run(3);
+        //e6.calcTriplets(3, 1, new ArrayList());
     }
 }
