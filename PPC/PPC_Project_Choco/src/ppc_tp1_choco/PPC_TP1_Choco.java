@@ -5,10 +5,6 @@
  */
 package ppc_tp1_choco;
 
-import java.util.ArrayList;
-import ppc_tp1_choco.view.Frame;
-import ppc_tp1_choco.view.Panel;
-
 /**
  *
  * @author jh224110
