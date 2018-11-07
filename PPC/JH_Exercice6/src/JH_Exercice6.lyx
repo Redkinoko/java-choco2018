@@ -1,0 +1,381 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Choco Solver
+\begin_inset Newline newline
+\end_inset
+
+Programmation par contrainte
+\begin_inset Newline newline
+\end_inset
+
+Exercice M6 : Nombre de Schur
+\begin_inset Newline newline
+\end_inset
+
+Master Bases de données et intelligence artificielle
+\begin_inset Newline newline
+\end_inset
+
+2018-2019
+\end_layout
+
+\begin_layout Author
+Julien HALLE
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Raisonnement
+\end_layout
+
+\begin_layout Standard
+Résumé : 
+\begin_inset Newline newline
+\end_inset
+
+Pour tout triplet 
+\begin_inset Formula $\left(a,b,c\right)$
+\end_inset
+
+ avec c = a + b et a, b, c appartenant à 
+\begin_inset Formula $\mathbb{N^{\star}}$
+\end_inset
+
+ et un nombre de couleur défini n, il est possible de colorier chacune des
+ variables a,b,c de tel façon que le triplet ne soit jamais monochrome jusqu'à
+ une certaine valeur de c.
+ On appelle ce nombre le nombre de Schur.
+ On le note : S(n) = max(c).
+\end_layout
+
+\begin_layout Section
+Représentation
+\end_layout
+
+\begin_layout Standard
+Le nombre de Schur est la valeur maximale de c pour laquelle on peut colorier
+ de facon non monochrome un triplet.
+ 
+\begin_inset Newline newline
+\end_inset
+
+On connait ses bornes minimale et maximale :
+\end_layout
+
+\begin_layout Itemize
+min(S(n)) = 
+\begin_inset Formula $\frac{\left(3^{n}-1\right)}{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+max(S(n)) = 
+\begin_inset Formula $\left(3\times n!\right)-1$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+On représente les nombres à colorier et leurs couleurs associées par un
+ tableau où l'index représente le nombre et la valeur représente la couleur.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Cependant :
+\end_layout
+
+\begin_layout Itemize
+L'index 0 n'est jamais utilisé (pour éviter de devoir décaler tous les résultats
+ de 1).
+\end_layout
+
+\begin_layout Itemize
+Les index utilisables sont compris entre min(S(n)) et max(S(n)).
+\end_layout
+
+\begin_layout Itemize
+La valeur 0 indique les variables non utilisées lors de la résolution.
+\end_layout
+
+\begin_layout Itemize
+Les valeurs sont comprises entre 1 et n.
+\end_layout
+
+\begin_layout Standard
+Les triplets sont représentés dans une classe Triplet avec 3 variables a,
+ b et c.
+\end_layout
+
+\begin_layout Section
+Contraintes
+\end_layout
+
+\begin_layout Standard
+On génère tous les triplets possibles pour les valeurs allant de min(S(n))
+ à max(S(n)).
+ Il faut éviter de générer les triplets mirroir qui génèreraient des doublons
+ dans les contraintes.
+\begin_inset Newline newline
+\end_inset
+
+Exemple : 
+\begin_inset Formula $\left(1,2,3\right)$
+\end_inset
+
+ et 
+\begin_inset Formula $\left(2,1,3\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La contrainte principal étant pour un triplet généré 
+\begin_inset Formula $\left(a,b,c\right)$
+\end_inset
+
+ : 
+\begin_inset Newline newline
+\end_inset
+
+Si a=b alors colors[a] != colors[c] avec colors le tableau contenant les
+ couleurs associés à un nombre.
+\end_layout
+
+\begin_layout Standard
+Le raisonnement est le même que si l'on essayait de résoudre de façon manuel
+ le problème.
+ Une fois les triplets de la forme 
+\begin_inset Formula $\left(a,a,2a\right)$
+\end_inset
+
+ résolu, il est plus aisé de continuer à attribuer les couleurs.
+\end_layout
+
+\begin_layout Standard
+On forcera le chiffre 1 à avoir la couleur 1, pour éviter la génération
+ de noeuds supplémentaires.
+\begin_inset Newline newline
+\end_inset
+
+Exemple : Pour S(3) en fixant 1 = couleur(1) on trouve 70 noeuds et sans
+ on trouve 249 noeuds, soit 179 noeuds évités.
+\end_layout
+
+\begin_layout Section
+Problèmes du modèle
+\end_layout
+
+\begin_layout Standard
+Pour que le solveur trouve une solution, il faut un domaine borné, or cela
+ créé des contraintes inutiles pour certaines valeurs :
+\begin_inset Newline newline
+\end_inset
+
+Exemple : Pour trouver S(3) avec min(S(3))=13 et max(S(3))=17, si on cherche
+ à évaluer tous les nombres strictement inférieurs à 14 alors les triplets
+ 
+\begin_inset Formula $\left(1,14,15\right)$
+\end_inset
+
+, 
+\begin_inset Formula $\left(2,13,15\right)$
+\end_inset
+
+ jusqu'à 
+\begin_inset Formula $\left(7,8,15\right)$
+\end_inset
+
+ génèrent des contraintes inutiles (idem pour les triplets de 16 jusqu'à
+ 17).
+\end_layout
+
+\begin_layout Standard
+Il faut préciser au solver de pas prendre en considération ces contraintes
+ (indiquée par la couleur 0).
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Images
+\end_layout
+
+\begin_layout Standard
+Figure 1 : On fixe n = 1
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset External
+	template RasterImage
+	filename S1.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+figure 1 : Calcul pour S(1)
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 2 : On fixe n = 2
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset External
+	template RasterImage
+	filename S2.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+figure 2 : Calcul pour S(2)
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 3 : On fixe n = 3
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset External
+	template RasterImage
+	filename S3.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+figure 3 : Calcul de S(3)
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 4 : On fixe n = 4
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset External
+	template RasterImage
+	filename S4.png
+	scale 72
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+figure 4 : Calcul de S(4)
+\end_layout
+
+\end_body
+\end_document

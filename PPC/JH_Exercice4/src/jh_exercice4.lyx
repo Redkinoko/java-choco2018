@@ -1,0 +1,307 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Choco Solver
+\begin_inset Newline newline
+\end_inset
+
+Programmation par contrainte
+\begin_inset Newline newline
+\end_inset
+
+Exercice M4 : Tomologie
+\begin_inset Newline newline
+\end_inset
+
+Master Bases de données et intelligence artificielle
+\begin_inset Newline newline
+\end_inset
+
+2018-2019
+\end_layout
+
+\begin_layout Author
+Julien HALLE
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Raisonnement
+\end_layout
+
+\begin_layout Standard
+Résumé : Le raisonneur doit trouver une image en noir et blanc en ne connaissant
+ uniquement que la somme des pixels noir des lignes, colonnes, diagonales
+ montantes et descendantes.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Une image en noir et blanc est une matrice de pixel qui ne peut prendre
+ que les valeurs de l'ensemble suivant : 
+\begin_inset Formula $\left\{ 0,1\right\} $
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Les diagonales sont lues de gauche à droite.
+\end_layout
+
+\begin_layout Standard
+Il existe une fonction permettant de déclarer des contraintes par des sommes
+ : model.sum(tableau,
+\begin_inset Quotes eld
+\end_inset
+
+=
+\begin_inset Quotes erd
+\end_inset
+
+,somme)
+\end_layout
+
+\begin_layout Standard
+Il faudra un tableau contenant les valeurs que l'on veut additionner, ainsi
+ que naviguer dans les valeurs en entrée(ligne, colonne, diag.montante, diag.desce
+ndante) pour connaître la valeur que doit faire cette somme.
+\end_layout
+
+\begin_layout Standard
+4 grands axes à suivre pour trouver les tableaux à référencer en tant que
+ contrainte :
+\end_layout
+
+\begin_layout Enumerate
+Ligne : Une matrice est un tableau 1D qui contient un sous-tableau 1D par
+ valeur : tableau[0] = première ligne
+\end_layout
+
+\begin_layout Enumerate
+Colonne : Il faut récupérer les valeurs des colonnes dans un tableau 1D
+ temporaire, pour cela on utilisera une fonction existante :
+\begin_inset Newline newline
+\end_inset
+
+org.chocosolver.util.tools.ArrayUtils.getColumn(tableau,numero_colonne)
+\end_layout
+
+\begin_layout Enumerate
+Diag.
+ montante : Il faut créer un tableau temporaire afin de déclarer la contrainte.
+ A noter que chaque diagonale ne contient pas le même nombre de valeurs.
+\end_layout
+
+\begin_layout Enumerate
+Diag.
+ descendante : Idem que 3.
+\end_layout
+
+\begin_layout Part
+Images
+\end_layout
+
+\begin_layout Standard
+La solution est exprimée sous forme de triplets donnant les coordonnées
+ des points noir x=y=1
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 1 :
+\end_layout
+
+\begin_layout Itemize
+ligne = (2,1,3)
+\end_layout
+
+\begin_layout Itemize
+colonne = (3,1,2)
+\end_layout
+
+\begin_layout Itemize
+diag.mont = (1,0,2,2,1)
+\end_layout
+
+\begin_layout Itemize
+diag.desc = (1,1,2,1,1)
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename collé1.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+figure 1 : Affichage d'une image d'un coin
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 2 :
+\end_layout
+
+\begin_layout Itemize
+ligne = (4,2,2,2)
+\end_layout
+
+\begin_layout Itemize
+colonne = (3,2,3,2)
+\end_layout
+
+\begin_layout Itemize
+diag.mont = (1,1,2,3,1,2,0)
+\end_layout
+
+\begin_layout Itemize
+diag.desc = (1,2,2,2,2,0,1)
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename collé2.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+figure 2 : Affichage d'une image représentant un R majuscule
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 3 :
+\end_layout
+
+\begin_layout Itemize
+ligne = (1,1,6,3,3, 6,1,1)
+\end_layout
+
+\begin_layout Itemize
+colonne = (2,2,2,6,4, 2,2,2)
+\end_layout
+
+\begin_layout Itemize
+diag.mont = (0,0,1,2,1, 2,3,4,2,1, 4,2,0,0,0)
+\end_layout
+
+\begin_layout Itemize
+diag.desc = (0,0,0,2,4, 1,2,4,3,2, 1,2,1,0,0)
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename collé3.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+figure 3 : Affichage d'une image représentant un personnage
+\end_layout
+
+\end_body
+\end_document

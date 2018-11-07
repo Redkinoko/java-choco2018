@@ -14,11 +14,6 @@ public class Triplet {
     public int b;
     public int c;
     
-    public Triplet()
-    {
-        
-    }
-    
     public Triplet(int a, int b, int c)
     {
         this.a = a;

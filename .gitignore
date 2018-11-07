@@ -22,3 +22,11 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /PPC/PPC_Project_Choco/dist/
+/PPC/JH_Exercice4/nbproject/private/
+/PPC/JH_Exercice4/build/
+/PPC/JH_Exercice5/nbproject/private/
+/PPC/JH_Exercice5/build/
+/PPC/JH_Exercice6/nbproject/private/
+/PPC/JH_Exercice6/build/
+/PPC/JH_Exercice6/dist/
+/PPC/JH_Exercice5/dist/
